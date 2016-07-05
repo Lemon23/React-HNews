@@ -1,10 +1,16 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'js/app.js'),
+  entry: path.resolve(__dirname, 'app/app.js'),
   output: {
-    path: path.resolve(__dirname, 'build/js'),
+    path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
+  },
+  devServer: {
+    hot: true,
+    inline: true,
+    contentBase: path.resolve(__dirname, 'build')
   },
   module: {
     loaders: [
@@ -17,13 +23,16 @@ module.exports = {
       }
     },
     {
-      test: /\.(png|jpg|gif)$/, 
-      loader: 'url-loader?limit=8192'
-    }, 
-    {
-      test: /\.css$/, 
+      test: /\.css$/,
       loader: 'style!css'
+    },
+    {
+      test: /\.(png|jpg|gif)$/,
+      loader: 'url-loader?limit=8192'
     }
     ]
-  }
-}
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
+};
